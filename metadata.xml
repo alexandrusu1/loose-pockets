@@ -1,0 +1,8 @@
+<metadata>
+  <name>Loose Pockets</name>
+  <description>Turns your inventory into a volatile resource: when you take damage, you drop items on the ground!</description>
+  <author>alexandrusu1</author>
+  <version>1.0</version>
+  <id>loose-pockets</id>
+  <repentance_min>1.7.5</repentance_min>
+</metadata>
