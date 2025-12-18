@@ -60,16 +60,21 @@ function Mod:SpawnSpilledItem(itemID, playerPos, damageSourcePos, player)
     local angle = rng:RandomFloat() * 60 - 30
     direction = direction:Rotated(angle)
     local velocity = direction * 10
-    local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, itemID, playerPos, velocity, player):ToPickup()
+    local ent = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, itemID, playerPos, velocity, nil)
+    local pickup = ent:ToPickup()
     if pickup then
         pickup:GetData().IsSpilledItem = true
         pickup:GetData().SpillTimer = DESPAWN_TIMER
+        pickup:GetData().OriginalItemID = itemID
+        print("LoosePockets: spawned spilled item", itemID)
     end
 end
 
 function Mod:OnPickupUpdate(pickup)
+    if not pickup then return end
+    if pickup.Type ~= EntityType.ENTITY_PICKUP or pickup.Variant ~= PickupVariant.PICKUP_COLLECTIBLE then return end
     if not pickup:GetData().IsSpilledItem then return end
-    pickup:GetData().SpillTimer = pickup:GetData().SpillTimer - 1
+    pickup:GetData().SpillTimer = (pickup:GetData().SpillTimer or DESPAWN_TIMER) - 1
     if pickup:GetData().SpillTimer < 60 then
         if pickup:GetData().SpillTimer % 10 < 5 then
             pickup:SetColor(Color(1,1,1,0.5,0,0,0), 2, 1, false, false)
@@ -80,9 +85,10 @@ function Mod:OnPickupUpdate(pickup)
     if pickup:GetData().SpillTimer <= 0 then
         Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector(0,0), nil)
         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 1.0, 0, false, 1.0)
+        print("LoosePockets: spilled item expired", pickup:GetData().OriginalItemID)
         pickup:Remove()
     end
 end
 
 Mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, Mod.OnDamage, EntityType.ENTITY_PLAYER)
-Mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, Mod.OnPickupUpdate, PickupVariant.PICKUP_COLLECTIBLE)
+Mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, Mod.OnPickupUpdate)
