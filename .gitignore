@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+*.tmp
+/.idea/
+/.cache/
+
+# Node/npm artifacts (if used)
+node_modules/
+dist/
+
+# macOS
+Icon?
