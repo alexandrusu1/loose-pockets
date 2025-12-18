@@ -1,6 +1,6 @@
 # Loose Pockets
 
-<p align="center"><img src="resources/gfx/ui/mod_icon.png" width="64" height="64" alt="Loose Pockets Icon"></p>
+<p align="center"><img src="resources/gfx/ui/mod_icon.png" width="360" height="360" alt="Loose Pockets Icon"></p>
 
 Loose Pockets is a high-energy gameplay mod for The Binding of Isaac: Repentance that creates instant, shareable moments every time you get hit.
 
