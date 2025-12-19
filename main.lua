@@ -90,6 +90,7 @@ end
 function Mod:OnDamage(entity, amount, flags, source, countdown)
     if not entity or not entity:ToPlayer() then return end
     local player = entity:ToPlayer()
+    if source and source.Entity and source.Entity:ToPlayer() then return end
     
     if flags & DamageFlag.DAMAGE_CURSED_DOOR > 0 then return end
     if flags & DamageFlag.DAMAGE_FAKE > 0 then return end
